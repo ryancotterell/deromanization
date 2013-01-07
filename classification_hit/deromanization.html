@@ -1,0 +1,164 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+ <script>
+   data = ["el ostad lasa 3ado likinoh ka elab etani li atilmid","salem 3alikoum inchalah le pondium  et les midailes d'or","au fi bladha ou matidihach bel 3a9liya adi","eeeeeehhhhh    at3allam ya solo","normal...hada chie rahou maoujoud min bekri..ouzid bziada ediouana 3atilhoum drahem bark ou dakhel ouech habit..","jil machi mrabbi c'est tout,, partout,,,c fini le monde arabe, 3arab jarab,,bye","hahaha ik ita3at al dzayer","ana   kandan had lmosalsalate  hiya tafwij 3la mogtama3  wach had lmo gtama3 3aych fi lmachakil  wizid hta lmachakil ta3  phelesten  machi ma39ol  phelesten  rah  bkhaha allah  ich ofha mahtala","normalement les filles doivent etre assez prudente parceque les algériens devient tous des malfaiteurs allah yastor et","Ehna mash agza leeh ha ha -.- (@ Faculty of Applied Arts)"];
+
+
+   var sentence = []
+   sentence.length = data[0].split(" ").length;
+   for (var i = 0; i < sentence.length; i++) {
+        sentence[i] = "[]";
+   }
+
+
+
+   function updateSentence(num,i) {
+        sentence[i] = $("#text-input" + num + '' + i).val();
+        var tmp = sentence.map(function(x) { if (x == "") { return "[]"; } else { return x; }});
+        $('#transliteration' + num).text(tmp.join(" ")); 
+        
+   }
+
+   function loadWord(num,i) {
+      sentence[i] = data[num].split(" ")[i];
+      var tmp = sentence.map(function(x) { if (x == "" || x == undefined) { return "[]"; } else { return x; }}); 
+      $("#text-input" + num + '' + i).val(sentence[i]);
+      $('#transliteration' + num).text(tmp.join(" "));
+
+   }
+
+
+   function createTable(num,sentence) {
+        
+         var $div = $('<div id="sentence' + num + '" class="container"/>');
+         var $row = $('<div id="row' + num + '" class="row" />');
+         var $transliteration = $('<div id="transliteration' + num + '" class="trans"/>');
+
+         $('body').append($div);
+         $('#sentence' + num).append($row);
+         $('#sentence' + num).append($transliteration);
+                           
+         for (var i = 0; i < sentence.length; i++) {
+             var $block = $('<div id="block' + num + '' + i + '" class="block"/>');
+             var $column = $('<div id="text' + num + '' + i + '" class="text"> <span class="word" onclick="loadWord(' + num + ',' + i + ')">' +  sentence[i] + '</span></div>');
+             var $input = $('<input type="text" id="text-input' + num + '' + i + '" onchange="updateSentence(' + num + ',' + i + ')" onkeydown="updateSentence(' + num + ',' + i + ')" onkeypress="updateSentence(' + num + ',' + i + ')" onkeyup="updateSentence(' + num + ',' + i + ')" />');           
+             $('#row' + num).append($block);
+             $('#block' + num + '' + i).append($column);
+             $('#block' + num + '' + i).append($input);
+	     
+         }
+         
+   }
+
+   function onLoad() {
+    
+         createTable(0,data[0].split(" "));
+
+   }
+
+</script>
+</head>
+<style>
+
+.word {
+   border: 1px solid black;
+   padding: 5px;
+   margin: 10px;
+}
+
+.text {
+   text-align: center;
+
+}
+
+.container {
+    padding: 5px;
+    border: 1px solid black;
+
+    x height: auto;
+    width: auto;
+    overflow: auto;
+
+}
+.container .row,.trans {
+    align: left;
+    float:left;
+    padding: 5px; 
+    
+    
+}
+
+.trans {
+    font-size: 30px;
+    border: 1px solid black;
+}
+
+.container .block {
+    padding: 5px;
+    float: left;
+}
+
+.sentence {
+    border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+    width: auto;
+}
+
+
+input {
+    position: relative;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin-top: 10px;
+
+}
+
+.input_div {
+     display: inline-block;
+     width: 100%;
+     overflow: hidden;
+}
+
+table  {
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+    color:#333333;
+    border-width: 1px;
+    border-color: #666666;
+    border-collapse: collapse;
+    
+}
+table th {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #dedede;
+    
+}
+table td {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #ffffff;
+    
+}
+
+
+
+
+
+</style>
+
+<body onload="onLoad();">
+ 
+</body>
+
+
+</html>
