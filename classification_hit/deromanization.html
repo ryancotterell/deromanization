@@ -18,15 +18,21 @@
    function updateSentence(num,i) {
         sentence[i] = $("#text-input" + num + '' + i).val();
         var tmp = sentence.map(function(x) { if (x == "") { return "[]"; } else { return x; }});
-        $('#transliteration' + num).text(tmp.join(" ")); 
+        $('#transliteration' + num).empty(); 
+        $('#transliteration' + num).html((tmp.map(function(x) { return '<div class="translit_word"> ' + x + ' </div>'; })).reverse());
         
    }
 
    function loadWord(num,i) {
       sentence[i] = data[num].split(" ")[i];
-      var tmp = sentence.map(function(x) { if (x == "" || x == undefined) { return "[]"; } else { return x; }}); 
+      
+      var tmp = sentence.map(function(x) { if (x == "") { return "[]"; } else { return x; }});
       $("#text-input" + num + '' + i).val(sentence[i]);
-      $('#transliteration' + num).text(tmp.join(" "));
+
+
+      $('#transliteration' + num).empty();
+      $('#transliteration' + num).html((tmp.map(function(x) { return '<div class="translit_word"> ' + x + ' </div>'; })).reverse());
+      
 
    }
 
@@ -63,6 +69,11 @@
 </head>
 <style>
 
+.translit_word {
+   padding: 5px;
+   float: left;
+}
+
 .word {
    border: 1px solid black;
    padding: 5px;
@@ -94,6 +105,10 @@
 .trans {
     font-size: 30px;
     border: 1px solid black;
+    width: auto;
+    float: left;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .container .block {
