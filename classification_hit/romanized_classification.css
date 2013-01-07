@@ -1,0 +1,17 @@
+
+.container {
+	   overflow: auto;
+	   width: auto;
+	   height: auto;
+	   padding: 5px;
+	   border: 1px solid black;
+}
+
+.inside {
+	
+	float: left;
+	margin: 5px;
+	padding: 5px;
+	border: 1px solid black;	
+}
+

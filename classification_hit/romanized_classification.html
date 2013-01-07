@@ -1,0 +1,128 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script>
+    data = ["el ostad lasa 3ado likinoh ka elab etani li atilmid","salem 3alikoum inchalah le pondium  et les midailes d'or","au fi bladha ou matidihach bel 3a9liya adi","eeeeeehhhhh    at3allam ya solo","normal...hada chie rahou maoujoud min bekri..ouzid bziada ediouana 3atilhoum drahem bark ou dakhel ouech habit..","jil machi mrabbi c'est tout,, partout,,,c fini le monde arabe, 3arab jarab,,bye","hahaha ik ita3at al dzayer","ana   kandan had lmosalsalate  hiya tafwij 3la mogtama3  wach had lmogtama3 3aych fi lmachakil  wizid hta lmachakil ta3  phelesten  machi ma39ol  phelesten  rah  bkhaha  allah  ich ofha mahtala","normalement les filles doivent etre assez prudente parceque les algériens devient tous des malfaiteurs allah yastor et","Ehna mash agza leeh ha ha -.- (@ Faculty of Applied Arts)"];
+    function mostlyArabic(num) {
+        document.getElementById("selection" + num).style.background="green";
+        document.getElementById("selection" + num).innerHTML="Mostly Arabic";
+    }
+
+    function mostlyOther(num) {
+        document.getElementById("selection" + num).style.background="blue";
+        document.getElementById("selection" + num).innerHTML="Mostly Other";
+    }
+
+
+  /*
+   Creates a container for classification
+  */
+  function createContainer(num) {
+    var $container = $('<div id="container' + num + '" class="super-container"/>');
+    var $number = $('<div id="number' + num + '" class="inside">(' + (num  + 1) + ')</div>');
+    var $comment_container = $('<div id="comment' + num + '" class="container"></div>');
+    var $bottom_container = $('<div id="bottom_container' + num + '" class="button-container"></div>');
+    var $selection = $('<div id="selection' + num + '" class="selection">Unclassified</div>');
+    var $text = $('<div id="text' + num + '"  class="text">' + data[num] + '</div>');
+    var $buttons = $('<div id="buttons' + num + '" class="buttons"/>');
+    var $mostly_arabic = $('<button type="button" class="button" onClick="mostlyArabic(' + num + ');">Mostly Arabic</button>');
+    var $mostly_other = $('<button type="button" class="button" onClick="mostlyOther(' + num + ');">Mostly Other</button>');
+    
+
+    $('body').append($container);
+    $('#container' + num).append($comment_container);
+    $('#container' + num).append($bottom_container);
+    $('#bottom_container' + num).append($selection);
+    $('#bottom_container' + num).append($buttons);
+    $('#buttons' + num).append($mostly_arabic);
+    $('#buttons' + num).append($mostly_other);
+
+    $('#comment' + num).append($number);
+    $('#comment' + num ).append($text);
+  }
+
+
+   
+   /*
+    Loads 10 containers on page load
+   */
+  function onLoad() {
+    for (var i = 0; i < 10; i++) {
+	createContainer(i);
+			
+    }
+  }
+  </script>
+
+
+</head>
+<style>
+
+.container, .button-container, .super-container {
+    overflow: auto;
+  
+    height: auto;
+    padding: 5px;
+    margin: 1px;
+   /* border: 1px solid black; */
+   
+}
+
+.super-container {
+    border: 1px solid black;
+
+}
+
+.button-container {
+   margin-bottom: 10px;
+   width: 400px;
+
+}
+
+.inside, .selection, .text, .buttons {
+    align: left;   
+    float: left;  
+    margin: 5px;
+    padding: 5px;
+    /*border: 1px solid black; */
+
+}
+
+#button {
+   width: 100px;
+
+}
+
+.buttons {
+    width: 100px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.text {
+    width: 500px;
+
+}
+
+.selection {
+    width: 100px;
+    background: gray;
+    text-align: center;
+    border: 1px solid black;
+}
+
+</style>
+<body onload="onLoad();">
+<h1>Classify Romanized Arabic Text</h1>
+<p>
+The task is to determine whether the following <em>romanized</em> text is actually Arabic. Many Arabic speakers write in the Latin alphabet on Twitter, forums and SMS and we are interesting in determining whether the following messages are actually Arabic, or a different langauge.
+</p>
+<p>
+Below you will see 10 sentences. For each sentence tell us whether the <b>MAJORITY</b> of the sentence is Arabic. We know many of these sentences have French or English mixed in with them. We just want to know if <b>most</b> of the sentence is in Arabic or another language. We made the task very simple and only gave you <em>two</em> choices.
+</p>
+
+
+</body>
+
+</html>

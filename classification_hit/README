@@ -1,0 +1,4 @@
+GOAL:
+
+-extract all comments from the Algerian and Egyptian datasets that have one word that is completely made up of Roman character excluding mention
+-create a HIT with binary classification to determine with messages are *mostly* Arabic
