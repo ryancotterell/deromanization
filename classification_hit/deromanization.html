@@ -6,44 +6,62 @@
  <script>
    data = ["el ostad lasa 3ado likinoh ka elab etani li atilmid","salem 3alikoum inchalah le pondium  et les midailes d'or","au fi bladha ou matidihach bel 3a9liya adi","eeeeeehhhhh    at3allam ya solo","normal...hada chie rahou maoujoud min bekri..ouzid bziada ediouana 3atilhoum drahem bark ou dakhel ouech habit..","jil machi mrabbi c'est tout,, partout,,,c fini le monde arabe, 3arab jarab,,bye","hahaha ik ita3at al dzayer","ana   kandan had lmosalsalate  hiya tafwij 3la mogtama3  wach had lmo gtama3 3aych fi lmachakil  wizid hta lmachakil ta3  phelesten  machi ma39ol  phelesten  rah  bkhaha allah  ich ofha mahtala","normalement les filles doivent etre assez prudente parceque les algériens devient tous des malfaiteurs allah yastor et","Ehna mash agza leeh ha ha -.- (@ Faculty of Applied Arts)"];
 
+   
 
-   var sentence = []
-   sentence.length = data[0].split(" ").length;
-   for (var i = 0; i < sentence.length; i++) {
-        sentence[i] = "[]";
+   var num_sentences = 10;
+   var sentence = [];
+   sentence.length = num_sentences;
+  
+   for (var i = 0; i < sentence.length; i++) {  
+       sentence[i] = [];  
+       for (var j = 0; j < data[i].split(" ").length; j++) {
+	    sentence[i][j] = "";
+       }
+       
    }
-
-
-
+  	    
+    /*
+   Updates the sentences when words are entered into the input text box
+   */
    function updateSentence(num,i) {
-        sentence[i] = $("#text-input" + num + '' + i).val();
-        var tmp = sentence.map(function(x) { if (x == "") { return "[]"; } else { return x; }});
+        
+        sentence[num][i] = $("#text-input" + num + '' + i).val();
+        var tmp = sentence[num].map(function(x) { if (x == "") { return "[]"; } else { return x; }});
         $('#transliteration' + num).empty(); 
         $('#transliteration' + num).html((tmp.map(function(x) { return '<div class="translit_word"> ' + x + ' </div>'; })).reverse());
         
    }
 
+
+   /*
+   Updates the sentence when a word is clicked. 
+   The clicking is for user convenience when it would otherwise be
+    necessary to change character sets.
+
+   */
    function loadWord(num,i) {
-      sentence[i] = data[num].split(" ")[i];
+      sentence[num][i] = data[num].split(" ")[i];
       
-      var tmp = sentence.map(function(x) { if (x == "") { return "[]"; } else { return x; }});
-      $("#text-input" + num + '' + i).val(sentence[i]);
-
-
+      var tmp = sentence[num].map(function(x) { if (x == "") { return "[]"; } else { return x; }});
+      $("#text-input" + num + '' + i).val(sentence[num][i]);
       $('#transliteration' + num).empty();
       $('#transliteration' + num).html((tmp.map(function(x) { return '<div class="translit_word"> ' + x + ' </div>'; })).reverse());
-      
 
    }
 
-
+   /* 
+    Creates the table for displaying the words
+   */
    function createTable(num,sentence) {
         
+   
          var $div = $('<div id="sentence' + num + '" class="container"/>');
+         var $number = $('<div id="num' + num + '" class="row">' + "(" + (num + 1) + ")" +  '</div>');
          var $row = $('<div id="row' + num + '" class="row" />');
          var $transliteration = $('<div id="transliteration' + num + '" class="trans"/>');
 
          $('body').append($div);
+         $('#sentence' + num).append($number);
          $('#sentence' + num).append($row);
          $('#sentence' + num).append($transliteration);
                            
@@ -60,9 +78,13 @@
    }
 
    function onLoad() {
-    
-         createTable(0,data[0].split(" "));
-
+         for (var i = 0; i < 5; i ++) { 
+               createTable(i,data[i].split(" "));
+               var tmp = sentence[i].map(function(x) { if (x == "") { return "[]"; } else { return x; }});
+               $('#transliteration' + i).empty();
+               $('#transliteration' + i).html((tmp.map(function(x) { return '<div class="translit_word"> ' + x + ' </div>'; })).reverse());
+	
+         }
    }
 
 </script>
@@ -78,6 +100,7 @@
    border: 1px solid black;
    padding: 5px;
    margin: 10px;
+   margin-bottom: 30px;
 }
 
 .text {
@@ -88,7 +111,7 @@
 .container {
     padding: 5px;
     border: 1px solid black;
-
+    margin: 10px;
     x height: auto;
     width: auto;
     overflow: auto;
