@@ -1,0 +1,211 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script>
+   var data = <?php
+   
+   $keys = array(urlencode($_GET['sentence_id1']),urlencode($_GET['sentence_id2']),urlencode($_GET['sentence_id3']),urlencode($_GET['sentence_id4']),urlencode($_GET['sentence_id5']),urlencode($_GET['sentence_id6']),urlencode($_GET['sentence_id7']),urlencode($_GET['sentence_id8']),urlencode($_GET['sentence_id9']),urlencode($_GET['sentence_id10']),urlencode($_GET['sentence_id11']),urlencode($_GET['sentence_id12']));
+
+   $conn = mysql_connect("localhost");
+   if (!$conn)
+   {
+       die('Could not connect: ' . mysql_error());
+   } 
+
+   mysql_query("USE sentences;");
+ 
+   echo '[';
+   for ($i = 0; $i < count($keys); ++$i) {
+       $result = mysql_query('SELECT * FROM egyptian_twitter WHERE message_id="' . $keys[$i] . '";');
+       if (!$result) {
+          die('Invalid query: ' . mysql_error());
+        }
+
+        echo '"';
+        echo mysql_fetch_assoc($result)['message'];
+        echo '"';
+
+        if (count($keys) - $i > 1) {
+            echo ",";
+        }
+
+          mysql_free_result($result);
+    }
+    echo "];\n";
+ 
+    mysql_close($conn);
+
+
+   ?>
+
+   for (var i = 0; i < data.length; i++) {
+      var tmp = decodeURIComponent(data[i]);
+     data[i] = unescape(tmp);
+   }
+
+
+//    data = ["el ostad lasa 3ado likinoh ka elab etani li atilmid","salem 3alikoum inchalah le pondium  et les midailes d'or","au fi bladha ou matidihach bel 3a9liya adi","eeeeeehhhhh    at3allam ya solo","normal...hada chie rahou maoujoud min bekri..ouzid bziada ediouana 3atilhoum drahem bark ou dakhel ouech habit..","jil machi mrabbi c'est tout,, partout,,,c fini le monde arabe, 3arab jarab,,bye","hahaha ik ita3at al dzayer","ana   kandan had lmosalsalate  hiya tafwij 3la mogtama3  wach had lmogtama3 3aych fi lmachakil  wizid hta lmachakil ta3  phelesten  machi ma39ol  phelesten  rah  bkhaha  allah  ich ofha mahtala","normalement les filles doivent etre assez prudente parceque les algériens devient tous des malfaiteurs allah yastor et","Ehna mash agza leeh ha ha -.- (@ Faculty of Applied Arts)"];
+    function mostlyArabic(num) {
+        document.getElementById("selection" + num).style.background="green";
+        document.getElementById("selection" + num).innerHTML="Mostly Arabic";
+    }
+
+    function mostlyOther(num) {
+        document.getElementById("selection" + num).style.background="blue";
+        document.getElementById("selection" + num).innerHTML="Mostly Other";
+    }
+
+
+  /*
+   Creates a container for classification
+  */
+  function createContainer(num) {
+    var $container = $('<div id="container' + num + '" class="super-container"/>');
+    var $number = $('<div id="number' + num + '" class="inside">(' + (num  + 1) + ')</div>');
+    var $comment_container = $('<div id="comment' + num + '" class="container"></div>');
+    var $bottom_container = $('<div id="bottom_container' + num + '" class="button-container"></div>');
+    var $selection = $('<div id="selection' + num + '" class="selection">Unclassified</div>');
+    var $text = $('<div id="text' + num + '"  class="text">' + data[num] + '</div>');
+    var $buttons = $('<div id="buttons' + num + '" class="buttons"/>');
+    var $mostly_arabic = $('<button type="button" class="button" onClick="mostlyArabic(' + num + ');">Mostly Arabic</button>');
+    var $mostly_other = $('<button type="button" class="button" onClick="mostlyOther(' + num + ');">Mostly Other</button>');
+    
+
+    $('body').append($container);
+    $('#container' + num).append($comment_container);
+    $('#container' + num).append($bottom_container);
+    $('#bottom_container' + num).append($selection);
+    $('#bottom_container' + num).append($buttons);
+    $('#buttons' + num).append($mostly_arabic);
+    $('#buttons' + num).append($mostly_other);
+
+    $('#comment' + num).append($number);
+    $('#comment' + num ).append($text);
+  }
+
+
+   
+   /*
+    Loads 10 containers on page load
+   */
+  function onLoad() {
+    for (var i = 0; i < 10; i++) {
+	createContainer(i);
+			
+    }
+  }
+  </script>
+
+
+</head>
+<style>
+
+.container, .button-container, .super-container {
+    overflow: auto;
+  
+    height: auto;
+    padding: 5px;
+    margin: 1px;
+   /* border: 1px solid black; */
+   
+}
+
+.super-container {
+    border: 1px solid black;
+
+}
+
+.button-container {
+   margin-bottom: 10px;
+   width: 400px;
+
+}
+
+.inside, .selection, .text, .buttons {
+    align: left;   
+    float: left;  
+    margin: 5px;
+    padding: 5px;
+    /*border: 1px solid black; */
+
+}
+
+.button {
+   
+   width: 100px;
+   height: 20px;
+
+}
+
+.buttons {
+    width: 100px;
+    padding: 0px;
+    
+}
+
+.text {
+    width: 500px;
+
+}
+
+.selection {
+    width: 100px;
+    height: 27px;
+    background: gray;
+    text-align: center;
+    border: 1px solid black;
+}
+
+h3 {
+
+    font-size: 20px;
+    font-weight: normal;
+}
+
+</style>
+<body onload="onLoad();">
+<table>
+    <tbody>
+        <tr>
+            <td>
+              
+	      <h1>Classify English Alphabet Arabic Text</h1>
+	      <p>
+		The task is to determine whether the following <em>romanized</em> text is actually Arabic. Many Arabic speakers write in the Latin alphabet on Twitter, forums and SMS and we are interested in determining whether the following messages are actually Arabic, or a different language.
+	      </p>
+	      <p>
+		Below you will see 10 sentences. For each sentence tell us whether the <b>MAJORITY</b> of the sentence is Arabic. We know many of these sentences have French or English mixed in with them. We just want to know if <b>most</b> of the sentence is in Arabic or another language. We made the task very simple and only gave you <em>two</em> choices.
+	      </p>
+
+	      <br>
+	      <h1>
+		تصنيف النص العربي المكتوب بالحروف اللاتينية
+              </h1>
+	      <p>
+		
+<h3>تصنيف النص العربي المكتوب بالحروف اللاتينية
+المهمة هي تحديد ما اذا كانت النصوص المكتوب بالاحرف اللاتينية هي عبارة عن نصوص عربية. العديد من الاشخاص اللذين يتكلمون العربية يستخدمون الاحرف اللاتينية لكتابة الكلمات او الجمل العربية على تويتر، ومواقع المناقشة، والرسائل النصيّة. ما نريده هو معرفة ما اذا كانت الرسائل التالية تعود الى اللغة العربية ام الى لغة اخر. </h3></p>
+<p><h3>
+في الاسفل هناك 10 جمل. لكل من الجمل الرجاء تحديد ما اذا كانت <u><b>معظم</b></u> كلمات الجملة عربية. نعلم ان معظم هذه الجمل تحتوي على كلمات فرنسية او انكليزية. نريد ان نعرف فقط ما اذا كانت <u><b>معظ</b></u>م الكلمات الموجودة في كل جملة من الجمل هي عربية ام انها تعود الى لغة اخرى. لقد جعلنا المهمة سهلة جداً ووضعنا<u><b> خيارين</b></u> فقط لكل جملة.
+</h3></p>
+
+            </td>
+            <td bgcolor="#d3d3d3" valign="top"><font size="-2"><center><u><b>Informed Consent Form</b></u></center>
+            <p><b>Purpose of research study:</b> We are collecting judgments about the quality of automatically generated text as part of our research into human language technologies.</p>
+            <p><b>Benefits:</b> Although it will not directly benefit you, this study may benefit society by improving how computers process human languages. This could lead to better translation software, improved web searching, or new user interfaces for computers and mobile devices.</p>
+            <p><b>Risks:</b>There are no risks for participating in this study.</p>
+            <p><b>Voluntary participation:</b>You may stop participating at any time without penalty by clicking on the &ldquo;Return HIT&rdquo; button, or closing your browser window.</p>
+            <p><b>We may end your participation if</b> you do not have adequate knowledge of the language, or you are not following the instructions, or your answers significantly deviate from known translations.</p>
+            <p><b>Confidentiality: </b>The only identifying information kept about you will be a WorkerID serial number and your IP address. This information may be disclosed to other researchers.</p>
+            <p><b>Questions/concerns: </b>You may e-mail questions to the principle investigator, <a href="http://cs.jhu.edu/~ccb/">Chris Callison-Burch</a>. If you feel you have been treated unfairly you may contact the Johns Hopkins University <a href="http://web.jhu.edu/Homewood-IRB/contact.html">Institutional Review Board</a>.</p>
+            <p><b>Clicking on the &ldquo;Accept HIT&rdquo; button</b> indicates that you understand the information in this consent form. You have not waived any legal rights you otherwise would have as a participant in a research study.</p>
+            </font></td>
+        </tr>
+    </tbody>
+</table>
+
+
+</body>
+
+</html>
