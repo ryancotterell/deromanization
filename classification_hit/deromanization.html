@@ -54,17 +54,19 @@
    */
    function createTable(num,sentence) {
         
-   
+         var $container = $('<div id="container' + num + '" class="outer_container" />');
          var $div = $('<div id="sentence' + num + '" class="container"/>');
          var $number = $('<div id="num' + num + '" class="row">' + "(" + (num + 1) + ")" +  '</div>');
          var $row = $('<div id="row' + num + '" class="row" />');
          var $transliteration = $('<div id="transliteration' + num + '" class="trans"/>');
 
-         $('body').append($div);
+         $('body').append($container);
+         $('#container' + num).append($div);
+         
          $('#sentence' + num).append($number);
          $('#sentence' + num).append($row);
-         $('#sentence' + num).append($(<br>));
-         $('#sentence' + num).append($transliteration);
+       
+         $('#container' + num).append($transliteration);
                            
          for (var i = 0; i < sentence.length; i++) {
              var $block = $('<div id="block' + num + '' + i + '" class="block"/>');
@@ -109,16 +111,23 @@
 
 }
 
+.outer_container {
+    border: 1px solid black;
+    margin: 5px;
+    overflow: auto;
+}
+
 .container {
     padding: 5px;
     border: 1px solid black;
     margin: 10px;
     x height: auto;
     width: auto;
+    
     overflow: auto;
 
 }
-.container .row,.trans {
+.container .row {
     align: left;
     float:left;
     padding: 5px; 
@@ -130,9 +139,9 @@
     font-size: 30px;
     border: 1px solid black;
     width: auto;
-    float: left;
-    display: inline-block;
-    white-space: nowrap;
+    overflow: auto;
+    margin: 10px;
+    
 }
 
 .container .block {
